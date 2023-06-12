@@ -109,10 +109,11 @@ user_proj_example mprj (
     .la_oenb (la_oenb),
 
     // IO Pads
-
-    .io_in ({io_in[37:30],io_in[7:0]}),
-    .io_out({io_out[37:30],io_out[7:0]}),
-    .io_oeb({io_oeb[37:30],io_oeb[7:0]}),
+    // 4 digit enable 7,8,9,10
+    // 7 segments 11,12,13,14,15,16,17,18
+    .io_in ({io_in[18:11],io_in[10:7]}),
+    .io_out({io_out[18:11],io_out[10:7]}),
+    .io_oeb({io_oeb[18:11],io_oeb[10:7]}),
 
     // IRQ
     .irq(user_irq)
