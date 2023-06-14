@@ -71,10 +71,6 @@ module user_proj_example #(
     wire clk;
     wire rst;
 
-    wire [11:0] io_in;
-    wire [11:0] io_out;
-    wire [11:0] io_oeb;
-
     wire [15:0] rdata; 
     wire [15:0] wdata;
     wire [15:0] count;
@@ -89,16 +85,12 @@ module user_proj_example #(
     assign wbs_dat_o = rdata;
     assign wdata = wbs_dat_i[15:0];
 
-    // IO
-    assign io_out = count;
-    assign io_oeb = {(15){rst}};
-
     // IRQ
     assign irq = 3'b000;	// Unused
    
     wire [7:0] seven_seg;
     wire [3:0]  digit_en;
-
+     
     timer #(
         .BITS(BITS)
     ) timer(
@@ -108,8 +100,8 @@ module user_proj_example #(
         .digit_en(digit_en)
     );
     
-    assign io_oeb = 12'b0;
-    assign io_out = {seven_seg,digit_en};
+    assign io_oeb = {4'hF,12'b0};
+    assign io_out = {4'd0,seven_seg,digit_en};
 
 endmodule
 
