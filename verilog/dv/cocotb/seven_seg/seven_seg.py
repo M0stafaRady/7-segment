@@ -16,12 +16,17 @@ async def seven_seg(dut):
     digit0 = digit1 = digit2 = digit3 = 0xFE
     root = tk.Tk()
     root.title("7 segment display")
-    screen = tk.Canvas(root)
+    screen = tk.Canvas(root, width=1500, height=500)
     screen.grid()
-    dig0 = Digit(screen, 10, 10) 
-    dig1 = Digit(screen, 40, 10) 
-    dig2 = Digit(screen, 70, 10) 
-    dig3 = Digit(screen, 100, 10)
+    dig0 = Digit(screen, 110, 110) 
+    dig1 = Digit(screen, 360, 110) 
+
+    TwoDots(screen, 610, 110, 710, 210) 
+    TwoDots(screen, 610, 310, 710, 410)
+
+    dig2 = Digit(screen, 804, 110)
+    dig3 = Digit(screen, 1054, 110)
+
     while True:
         digit_num, digit = await read_seg(caravelEnv)
         if (realistic_gui):
@@ -30,23 +35,23 @@ async def seven_seg(dut):
             dig2.show(10)
             dig3.show(10)
         if digit_num == 0: 
-            digit0 = digit
-            dig0.show(int_to_seg(digit0))
-        elif digit_num == 1:
-            digit1 = digit
-            dig1.show(int_to_seg(digit1))
-        elif digit_num == 2:
-            digit2 = digit
-            dig2.show(int_to_seg(digit2))
-        elif digit_num == 3:
             digit3 = digit
             dig3.show(int_to_seg(digit3))
+        elif digit_num == 1:
+            digit2 = digit
+            dig2.show(int_to_seg(digit2))
+        elif digit_num == 2:
+            digit1 = digit
+            dig1.show(int_to_seg(digit1))
+        elif digit_num == 3:
+            digit0 = digit
+            dig0.show(int_to_seg(digit0))
         # num =int_to_seg(digit0) + int_to_seg(digit1)*10 + int_to_seg(digit2)*100 + int_to_seg(digit3)*1000
         # cocotb.log.debug(f"digit num = {num}")
         cocotb.log.debug(f"clock =  {int_to_seg(digit0)} {int_to_seg(digit1)} {int_to_seg(digit2)} {int_to_seg(digit3)}")
         root.update()
-        if (realistic_gui):
-            time.sleep(0.01)
+        # if (realistic_gui):
+        #     time.sleep(0.01)
 
 
 async def read_seg(caravelEnv):
@@ -90,7 +95,7 @@ def int_to_seg(digit):
 
 
 class Digit:
-    def __init__(self, canvas, x=10, y=10, length=20, width=4):
+    def __init__(self, canvas, x=10, y=10, length=160, width=32, is_2_dots=False):
         self.canvas = canvas
         l = length
         self.segs = []
@@ -119,7 +124,14 @@ class Digit:
         for x0, y0, x1, y1 in offsets:
             self.segs.append(canvas.create_line(
                 x + x0*l, y + y0*l, x + x1*l, y + y1*l,
-                width=width, state = 'hidden'))
+                width=width, state='normal'))
+
     def show(self, num):
         for iid, on in zip(self.segs, self.digits[num]):
-            self.canvas.itemconfigure(iid, state = 'normal' if on else 'hidden')
+            self.canvas.itemconfigure(iid, fill='#B90E0A' if on else "")
+
+class TwoDots:
+    def __init__(self, canvas, x=10, y=10, length=20, width=4):
+        self.canvas = canvas
+        l = length
+        canvas.create_oval(x, y, length, width, outline="#B90E0A" , fill="#B90E0A")
