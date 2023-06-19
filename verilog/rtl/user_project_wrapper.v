@@ -91,32 +91,12 @@ user_proj_example mprj (
     .wb_clk_i(wb_clk_i),
     .wb_rst_i(wb_rst_i),
 
-    // MGMT SoC Wishbone Slave
-
-    .wbs_cyc_i(wbs_cyc_i),
-    .wbs_stb_i(wbs_stb_i),
-    .wbs_we_i(wbs_we_i),
-    .wbs_sel_i(wbs_sel_i),
-    .wbs_adr_i(wbs_adr_i),
-    .wbs_dat_i(wbs_dat_i),
-    .wbs_ack_o(wbs_ack_o),
-    .wbs_dat_o(wbs_dat_o),
-
-    // Logic Analyzer
-
-    .la_data_in(la_data_in),
-    .la_data_out(la_data_out),
-    .la_oenb (la_oenb),
-
     // IO Pads
-    // 4 digit enable 7,8,9,10
-    // 7 segments 11,12,13,14,15,16,17,18
-    .io_in ({io_in[18:11],io_in[10:7]}),
-    .io_out({io_out[18:11],io_out[10:7]}),
-    .io_oeb({io_oeb[18:11],io_oeb[10:7]}),
-
-    // IRQ
-    .irq(user_irq)
+    // 4 digit enable 26,27,28,29
+    // 7 segments 30,31,32,33,34,35,36,37
+    .io_in (io_in[37:26]),
+    .io_out(io_out[37:26]),
+    .io_oeb(io_oeb[37:26])
 );
 
 endmodule	// user_project_wrapper
