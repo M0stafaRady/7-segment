@@ -1,6 +1,6 @@
-from cocotb_includes import report_test
-from cocotb_includes import cocotb
-from cocotb_includes import test_configure
+from caravel_cocotb.caravel_interfaces import report_test
+import cocotb
+from caravel_cocotb.caravel_interfaces import test_configure
 from cocotb.triggers import ClockCycles, Edge, First, NextTimeStep
 import tkinter as tk
 import time
@@ -56,14 +56,14 @@ async def seven_seg(dut):
 
 async def read_seg(caravelEnv):
     # wait for any change at digit_en
-    digit0 = Edge(caravelEnv.dut.gpio7_monitor)
-    digit1 = Edge(caravelEnv.dut.gpio8_monitor)
-    digit2 = Edge(caravelEnv.dut.gpio9_monitor)
-    digit3 = Edge(caravelEnv.dut.gpio10_monitor)
+    digit0 = Edge(caravelEnv.dut.gpio26_monitor)
+    digit1 = Edge(caravelEnv.dut.gpio27_monitor)
+    digit2 = Edge(caravelEnv.dut.gpio28_monitor)
+    digit3 = Edge(caravelEnv.dut.gpio29_monitor)
     await First(digit0, digit1, digit2, digit3)
     await NextTimeStep()  # make sure no race happened 
-    digit_en = caravelEnv.monitor_gpio(10, 7).integer
-    digit = caravelEnv.monitor_gpio(18, 11).integer
+    digit_en = caravelEnv.monitor_gpio(29, 26).integer
+    digit = caravelEnv.monitor_gpio(37, 30).integer
     cocotb.log.debug(f"digit_en = {hex(digit_en)} digit = {hex(digit)}")
     if (digit_en == 0xE):
         digit_num = 0
