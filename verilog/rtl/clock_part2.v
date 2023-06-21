@@ -6,6 +6,12 @@
      - The WB bus is used to set the ALARM and to adjust the time
      - The clock interrupts the management SoC when the time matches the set alarm
     
+    WB Registers:
+    Register        Offset      Mode    Description  
+    ALARM_REG_OFF   0           RW      16-bit Alarm register; 4 BCD digits for the seconds and the minutes
+    TIME_REG_OFF    4           RW      16-bit Timer register; 4 BCD digits for the seconds and the minutes
+    IRQCLR_REG_OFF  8           W       Writing to this register clears the IRQ
+    
     RTL Parameters:
      - Common Anode (CC=0) or Common Cathode (CC=1) multiplexed display
      - Different clock frequencies (FREQ in Hertz)
