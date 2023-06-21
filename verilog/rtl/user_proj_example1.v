@@ -22,7 +22,7 @@
  *-------------------------------------------------------------
  */
 
-module user_proj_example #(
+module user_proj_example1 #(
     parameter BITS = 32
 )(
 `ifdef USE_POWER_PINS
@@ -42,16 +42,13 @@ module user_proj_example #(
    
     wire [7:0] seven_seg;
     wire [3:0]  digit_en;
-     
-    timer #(
-        .BITS(BITS)
-    ) timer(
+    Clock_part1 Clock_part1(
         .clk(wb_clk_i),
         .rst(wb_rst_i),
         .seven_seg(seven_seg),
         .digit_en(digit_en)
     );
-    
+
     assign io_oeb = 12'b0;
     assign io_out = {seven_seg,digit_en};
 

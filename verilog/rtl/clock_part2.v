@@ -78,6 +78,14 @@ module Clock_part2 #(parameter  CC = 1,
             alarm_reg <= 16'h0; 
         else if(wb_we & (wb_alarm_reg_sel)) 
             alarm_reg <= wb_dat_i[15:0];
+            
+    // the counter
+    reg [3:0]   sec_ones, sec_tens;
+    reg [3:0]   min_ones, min_tens;
+    wire        nine_sec        = (sec_ones == 4'd9);
+    wire        fifty_nine_sec  = (sec_tens == 4'd5) & nine_sec;
+    wire        nine_min        = (min_ones == 4'd9);
+    wire        fifty_nine_min  = (min_tens == 4'd5) & nine_min;
 
     // The Time Register
     wire [15:0] time_reg = {min_tens, min_ones, sec_tens, sec_ones};
@@ -95,13 +103,7 @@ module Clock_part2 #(parameter  CC = 1,
                         (wb_time_reg_sel)   ? {16'h0, time_reg} :
                         32'h0BADBAD0;
 
-    // the counter
-    reg [3:0]   sec_ones, sec_tens;
-    reg [3:0]   min_ones, min_tens;
-    wire        nine_sec        = (sec_ones == 4'd9);
-    wire        fifty_nine_sec  = (sec_tens == 4'd5) & nine_sec;
-    wire        nine_min        = (min_ones == 4'd9);
-    wire        fifty_nine_min  = (min_tens == 4'd5) & nine_min;
+    
     
     // Time Base Generators
     reg         sec;

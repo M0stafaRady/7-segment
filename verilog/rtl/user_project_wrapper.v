@@ -81,8 +81,8 @@ module user_project_wrapper #(
 /*--------------------------------------*/
 /* User project is instantiated  here   */
 /*--------------------------------------*/
-
-user_proj_example mprj (
+`ifdef USE_PART_1
+user_proj_example1 mprj (
 `ifdef USE_POWER_PINS
 	.vccd1(vccd1),	// User area 1 1.8V power
 	.vssd1(vssd1),	// User area 1 digital ground
@@ -98,7 +98,31 @@ user_proj_example mprj (
     .io_out(io_out[37:26]),
     .io_oeb(io_oeb[37:26])
 );
+`elsif USE_PART_2
+user_proj_example2 mprj (
+`ifdef USE_POWER_PINS
+	.vccd1(vccd1),	// User area 1 1.8V power
+	.vssd1(vssd1),	// User area 1 digital ground
+`endif
 
+    .wb_clk_i(wb_clk_i),
+    .wb_rst_i(wb_rst_i),
+    .wbs_adr_i(wbs_adr_i),
+    .wbs_dat_i(wbs_dat_i),
+    .wbs_dat_o(wbs_dat_o),
+    .wbs_sel_i(wbs_sel_i),
+    .wbs_cyc_i(wbs_cyc_i),
+    .wbs_stb_i(wbs_stb_i),
+    .wbs_ack_o(wbs_ack_o),
+    .wbs_we_i(wbs_we_i),
+    // IO Pads
+    // 4 digit enable 26,27,28,29
+    // 7 segments 30,31,32,33,34,35,36,37
+    .io_in (io_in[37:26]),
+    .io_out(io_out[37:26]),
+    .io_oeb(io_oeb[37:26])
+);
+`endif // USE_PART_1
 endmodule	// user_project_wrapper
 
 `default_nettype wire
