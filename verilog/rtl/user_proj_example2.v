@@ -54,7 +54,7 @@ module user_proj_example2 #(
     Clock_part2 Clock_part2(
         .clk(wb_clk_i),
         .rst(wb_rst_i),
-        .wb_adr_i(wbs_adr_i),
+        .wb_adr_i(wbs_adr_i[3:0]),
         .wb_dat_i(wbs_dat_i),
         .wb_dat_o(wbs_dat_o),
         .wb_sel_i(wbs_sel_i),
