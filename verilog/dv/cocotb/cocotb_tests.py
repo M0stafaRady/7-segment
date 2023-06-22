@@ -1,3 +1,4 @@
 from hello_world_uart.hello_world_uart import hello_world_uart
 from seven_seg.seven_seg import seven_seg
 from seven_seg_init_val.seven_seg_init_val import seven_seg_init_val
+from seven_seg_irq.seven_seg_irq import seven_seg_irq
