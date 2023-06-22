@@ -120,7 +120,8 @@ user_proj_example2 mprj (
     // 7 segments 30,31,32,33,34,35,36,37
     .io_in (io_in[37:26]),
     .io_out(io_out[37:26]),
-    .io_oeb(io_oeb[37:26])
+    .io_oeb(io_oeb[37:26]),
+    .irq(user_irq[0])
 );
 `endif // USE_PART_1
 endmodule	// user_project_wrapper
