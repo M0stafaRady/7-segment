@@ -39,14 +39,14 @@ module user_proj_example2 #(
     input wire [3:0] wbs_sel_i,
     input wire [31:0] wbs_dat_i,
     input wire [31:0] wbs_adr_i,
-    output reg wbs_ack_o,
-    output reg [31:0] wbs_dat_o,
+    output wbs_ack_o,
+    output [31:0] wbs_dat_o,
     // IOs
     input  [11:0] io_in,
     output [11:0] io_out,
     output [11:0] io_oeb,
     // irq 
-    output reg irq
+    output irq
 );
    
     wire [7:0] seven_seg;

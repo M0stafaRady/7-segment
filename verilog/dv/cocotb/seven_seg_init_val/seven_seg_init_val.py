@@ -2,55 +2,25 @@ from caravel_cocotb.caravel_interfaces import report_test
 import cocotb
 from caravel_cocotb.caravel_interfaces import test_configure
 from cocotb.triggers import ClockCycles, Edge, First, NextTimeStep
-import tkinter as tk
-import time
-
-realistic_gui = False
-
+from gui_screen import GuiScreen
+from segments_monitor import SegmentsMonitor
 
 @cocotb.test()
 # use report_test for configuring the logs correctly
 @report_test
 async def seven_seg_init_val(dut):
+    # initialize the display gui before powering caravel on
+    screen = GuiScreen()
     # configure file used for configuring caravel power, clock, and reset and setup the timeout watchdog then return object of caravel environment.
     caravelEnv = await test_configure(dut, timeout_cycles=275837)
-    # logic for setup the gui 
-    digit0 = digit1 = digit2 = digit3 = 0xFE
-    root = tk.Tk()
-    root.title("7 segment display")
-    screen = tk.Canvas(root, width=1500, height=500)
-    screen.grid()
-    dig3 = Digit(screen, 110, 110) 
-    dig2 = Digit(screen, 360, 110) 
-    TwoDots(screen, 610, 110, 710, 210) 
-    TwoDots(screen, 610, 310, 710, 410)
-    dig1 = Digit(screen, 804, 110)
-    dig0 = Digit(screen, 1054, 110)
-    dig0.show(int_to_seg(digit0))
-    dig1.show(int_to_seg(digit0))
-    dig2.show(int_to_seg(digit0))
-    dig3.show(int_to_seg(digit0))
-    root.update()
+    # wait until initialized value is written to the digits 
     await caravelEnv.wait_mgmt_gpio(1)
+    segements_monitor = SegmentsMonitor(caravelEnv)
     while True:
         # detecting and reading the digit if any changes happened at the digit_en pins
-        digit_num, digit = await read_seg(caravelEnv)
+        digit_num, digit = await segements_monitor.segment_change()
         # assigning the digit to the display
-        if digit_num == 0:
-            digit0 = digit
-            dig0.show(int_to_seg(digit0))
-        elif digit_num == 1:
-            digit1 = digit
-            dig1.show(int_to_seg(digit1))
-        elif digit_num == 2:
-            digit2 = digit
-            dig2.show(int_to_seg(digit2))
-        elif digit_num == 3:
-            digit3 = digit
-            dig3.show(int_to_seg(digit3))
-        cocotb.log.debug(f"[Test] clock =  {int_to_seg(digit0)} {int_to_seg(digit1)} {int_to_seg(digit2)} {int_to_seg(digit3)}")
-        # updating the display
-        root.update()
+        screen.update_digit(digit_num, digit)
 
 
 async def read_seg(caravelEnv):
